@@ -7,13 +7,13 @@
         "path": "socialatendimento",
         "options": {}
       },
-      "id": "285b07df-91e0-4056-9dd6-e25ac7830460",
+      "id": "9ac25ca7-c69a-41c0-86fe-b7d71873144f",
       "name": "Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
       "position": [
-        -500,
-        2040
+        -1120,
+        440
       ],
       "webhookId": "e8d38d79-8f79-4bd1-85f8-fce3d8200233"
     },
@@ -24,19 +24,19 @@
           "string": [
             {
               "name": "URL FORMADA",
-              "value": "=https://{{ $node[\"Colocando Dados\"].json[\"URL N8N\"] }}/webhook/from-chatwoot?qphost=https://{{ $node[\"Colocando Dados\"].json[\"URL DO QUEPASA\"] }}&qptoken={{ $node[\"Colocando Dados\"].json[\"TOKEN DO QUEPASA\"] }}&inbox={{ $node[\"Colocando Dados\"].json[\"NUMERO DO INBOX\"] }}&identifier={{ $node[\"Informa Identifier\"].json[\"identifier\"] }}&cwhost=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}&utoken={{ $json.substring }}&atoken={{ $node[\"Atribui Cria AgentBot a Conta1\"].json[\"access_token\"] }}&account={{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }}"
+              "value": "=https://{{ $node[\"Colocando Dados\"].json[\"URL N8N\"] }}/webhook/from-chatwoot?qphost=https://{{ $node[\"Colocando Dados\"].json[\"URL DO QUEPASA\"] }}&qptoken={{ $node[\"Colocando Dados\"].json[\"TOKEN DO QUEPASA\"] }}&inbox={{ $node[\"Colocando Dados\"].json[\"NUMERO DO INBOX\"] }}&identifier={{ $node[\"Informa Identifier\"].json[\"identifier\"] }}&cwhost=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}&utoken={{ $json.substring }}&atoken={{ $node[\"Garante Token\"].json[\"token\"] }}&account={{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }}"
             }
           ]
         },
         "options": {}
       },
-      "id": "131e0c1b-7502-47fb-923c-44f25cdaddec",
+      "id": "97df99d9-06b4-467a-a410-9336cde67c4e",
       "name": "Formação da URL",
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        240,
-        2241
+        -160,
+        441
       ],
       "retryOnFail": false,
       "continueOnFail": true
@@ -47,7 +47,7 @@
           "string": [
             {
               "name": "URL N8N",
-              "value": "workflows.socialatendimento.com.br"
+              "value": "n8n.socialatendimento.com.br"
             },
             {
               "name": "URL DO QUEPASA",
@@ -71,19 +71,19 @@
             },
             {
               "name": "TOKEN Platform Apps",
-              "value": "9zgP1k6qZ6bPciGXjt9vJyiq"
+              "value": "dz3qEedSZwXeEVLBH4u5uyvR"
             }
           ]
         },
         "options": {}
       },
-      "id": "3456fb7b-1c01-4021-9ddb-a558c39eddc7",
+      "id": "7d8b04f7-66a7-4fa5-9a57-1f043328885f",
       "name": "Colocando Dados",
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        -300,
-        2040
+        -920,
+        440
       ]
     },
     {
@@ -98,13 +98,13 @@
         },
         "options": {}
       },
-      "id": "558bca49-c54e-444c-8ece-7aaa552d8bf7",
+      "id": "cd01838c-020c-4f7e-a40c-ef4e6145f2a2",
       "name": "Gerador Token",
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        780,
-        2240
+        380,
+        440
       ]
     },
     {
@@ -121,13 +121,13 @@
         },
         "options": {}
       },
-      "id": "b21fa2da-bda1-4409-a82b-4df0f88117b3",
+      "id": "ba4748b1-a122-4605-8993-e40eee3833d1",
       "name": "Cria o QrCode",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
       "position": [
-        -540,
-        2440
+        -240,
+        780
       ]
     },
     {
@@ -148,141 +148,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 2,
       "position": [
-        -380,
-        2440
+        -60,
+        780
       ],
-      "id": "36aa28c0-6a17-4c16-a14a-c78c29f8fadd"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/platform/api/v1/agent_bots",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "api_access_token",
-              "value": "={{ $json[\"TOKEN Platform Apps\"] }}"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "name",
-              "value": "={{ $json.body.inbox_id }}"
-            },
-            {
-              "name": "description",
-              "value": "={{ $json.body.inbox_id }}"
-            },
-            {
-              "name": "outgoing_url",
-              "value": "={{ $json.body.inbox_id }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "33e7b494-4f40-4508-9917-93d4bc3f6d25",
-      "name": "Cria AgentBot",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 3,
-      "position": [
-        -120,
-        2040
-      ]
-    },
-    {
-      "parameters": {
-        "method": "PATCH",
-        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/platform/api/v1/agent_bots/{{ $json.id }}",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "api_access_token",
-              "value": "={{ $node[\"Colocando Dados\"].json[\"TOKEN Platform Apps\"] }}"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "name",
-              "value": "={{ $json.name }}"
-            },
-            {
-              "name": "description",
-              "value": "={{ $json.description }}"
-            },
-            {
-              "name": "outgoing_url",
-              "value": "={{ $json.outgoing_url }}"
-            },
-            {
-              "name": "account_id",
-              "value": "={{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "2afd3f64-3e4f-46fe-816a-0ad3fbf418b0",
-      "name": "Atribui Cria AgentBot a Conta",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 3,
-      "position": [
-        80,
-        2040
-      ]
-    },
-    {
-      "parameters": {
-        "method": "PATCH",
-        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/platform/api/v1/agent_bots/{{ $json.id }}",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "api_access_token",
-              "value": "={{ $node[\"Colocando Dados\"].json[\"TOKEN Platform Apps\"] }}"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "name",
-              "value": "={{ $json.name }}"
-            },
-            {
-              "name": "description",
-              "value": "={{ $json.description }}"
-            },
-            {
-              "name": "outgoing_url",
-              "value": "={{ $json.outgoing_url }}"
-            },
-            {
-              "name": "account_id",
-              "value": "={{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "49ab7c8a-194d-4ffc-9acd-3813d6672f5b",
-      "name": "Atribui Cria AgentBot a Conta1",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 3,
-      "position": [
-        280,
-        2040
-      ]
+      "id": "e465ed7a-72f8-4e19-a9b7-20dff36ca684"
     },
     {
       "parameters": {
@@ -290,17 +159,17 @@
         "query": "=UPDATE \"public\".\"channel_api\" SET \"webhook_url\"='{{ $node[\"Formação da URL\"].json[\"URL FORMADA\"] }}' WHERE  \"id\"={{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }};",
         "additionalFields": {}
       },
-      "id": "bc3121b9-e944-4ee2-adeb-523c23c43b10",
+      "id": "3151ce79-6e1d-44ce-ac1e-71568e340b62",
       "name": "Atualiza Webhook",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 1,
       "position": [
-        1120,
-        2540
+        1600,
+        1000
       ],
       "credentials": {
         "postgres": {
-          "id": "6",
+          "id": "1",
           "name": "Postgres account"
         }
       },
@@ -309,41 +178,21 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "=INSERT INTO \"agent_bot_inboxes\" (\"id\", \"inbox_id\", \"agent_bot_id\", \"status\", \"created_at\", \"updated_at\", \"account_id\") VALUES (nextval('agent_bot_inboxes_id_seq'::regclass), {{ $node[\"Colocando Dados\"].json[\"NUMERO DO INBOX\"] }}, {{ $json.id }}, 0, '2023-03-07 15:01:00.823377', '2023-03-07 15:01:00.823377', {{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }});",
+        "query": "=SELECT \"public\".\"channel_api\".\"identifier\" FROM \"public\".\"channel_api\" INNER JOIN \"public\".\"inboxes\" ON \"public\".\"channel_api\".\"id\" = \"public\".\"inboxes\".\"channel_id\" WHERE \"public\".\"channel_api\".\"account_id\"='{{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }}' AND \"public\".\"inboxes\".\"id\" = '{{ $node[\"Colocando Dados\"].json[\"NUMERO DO INBOX\"] }}';",
         "additionalFields": {}
       },
-      "id": "f4229e40-c8ff-43f4-b16c-f55a64459c21",
-      "name": "Insere AgentBot",
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 1,
-      "position": [
-        -500,
-        2240
-      ],
-      "credentials": {
-        "postgres": {
-          "id": "6",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "=SELECT \"public\".\"channel_api\".\"identifier\" FROM \"public\".\"channel_api\" INNER JOIN \"public\".\"inboxes\" ON \"public\".\"channel_api\".\"id\" = \"public\".\"inboxes\".\"channel_id\" WHERE \"public\".\"channel_api\".\"account_id\"={{ $json.account_id }} AND \"public\".\"inboxes\".\"id\" = {{ $json.name }};",
-        "additionalFields": {}
-      },
-      "id": "24c487d8-58ed-43ae-a294-5a58e31fb42e",
+      "id": "fc16a3b7-4cb9-4c3a-8dfc-98c080d49691",
       "name": "Informa Identifier",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 1,
       "position": [
-        -320,
-        2240
+        -820,
+        720
       ],
+      "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "6",
+          "id": "1",
           "name": "Postgres account"
         }
       }
@@ -359,13 +208,13 @@
           ]
         }
       },
-      "id": "69c21e89-8e5b-4bdb-9aa8-0c259228b7ac",
+      "id": "19a622af-b4e6-49ad-864d-094e3220039a",
       "name": "IF",
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        1140,
-        2320
+        1580,
+        580
       ]
     },
     {
@@ -400,13 +249,13 @@
         },
         "options": {}
       },
-      "id": "21b45a76-d83b-4948-ac20-f9be1c6fdf38",
+      "id": "00ec7133-b074-4f3e-99ca-10e9f5134aec",
       "name": "Envia Mensagem De Conectado",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
       "position": [
-        1300,
-        2420
+        1860,
+        720
       ]
     },
     {
@@ -415,19 +264,19 @@
         "query": "=SELECT  \"id\", SUBSTRING(\"owner_type\", 1, 256),  \"owner_id\", SUBSTRING(\"token\", 1, 256),  \"created_at\",  \"updated_at\" \nFROM \"public\".\"access_tokens\" \nWHERE \"owner_id\"={{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }} AND \n      \"owner_type\"='User'",
         "additionalFields": {}
       },
-      "id": "242cc507-a3b9-4db2-891b-277b4a991bb0",
+      "id": "ab98d699-ac1f-4d10-835d-2bf6fbd45a95",
       "name": "Pega Token Chatwoot",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 1,
       "position": [
-        -120,
-        2241
+        -620,
+        720
       ],
-      "alwaysOutputData": false,
+      "alwaysOutputData": true,
       "retryOnFail": false,
       "credentials": {
         "postgres": {
-          "id": "6",
+          "id": "1",
           "name": "Postgres account"
         }
       }
@@ -464,13 +313,13 @@
         },
         "options": {}
       },
-      "id": "45814055-eeb8-4266-ab6c-e851bea5ab16",
+      "id": "e5f4f850-f126-4daf-bf00-4d1dc820f96b",
       "name": "Qrcode gerado com sucesso!",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
       "position": [
-        -200,
-        2440
+        120,
+        780
       ]
     },
     {
@@ -479,13 +328,13 @@
         "token": "={{ $node[\"Colocando Dados\"].json[\"TOKEN DO QUEPASA\"] }}",
         "resource": "webhook"
       },
-      "id": "74796e88-d98f-45db-adc5-07a0a6ddac40",
+      "id": "070b91be-d00c-4efb-86a1-9df832dbcd00",
       "name": "Verifica se Conectou",
       "type": "n8n-nodes-quepasa.quepasa",
       "typeVersion": 1,
       "position": [
-        1100,
-        2040
+        1300,
+        380
       ],
       "continueOnFail": true
     },
@@ -521,13 +370,13 @@
         },
         "options": {}
       },
-      "id": "d81c5bf6-6c0c-4c05-a9d8-288cb76cf770",
+      "id": "a5f17565-5a1c-4ec3-a5d2-04caebbabf5d",
       "name": "Passou tempo Tente Novamente",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
       "position": [
-        1300,
-        2100
+        1840,
+        360
       ]
     },
     {
@@ -535,13 +384,13 @@
         "amount": 30,
         "unit": "seconds"
       },
-      "id": "d45b29fe-4271-412d-a9ff-c24bde8ccf21",
+      "id": "e0b82578-579c-4102-8abf-0a33d71aa9bd",
       "name": "Aguarda 30 Segundos para Escanear Qrcode",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [
-        0,
-        2440
+        320,
+        780
       ],
       "webhookId": "b8706931-81cb-4f18-93e0-0a5d5416734b"
     },
@@ -577,29 +426,13 @@
         },
         "options": {}
       },
-      "id": "2e9f841b-9164-4b72-9968-8f8dfec49b63",
+      "id": "37f78fdd-cff2-4a7c-b14a-04db54939112",
       "name": "Testando 123",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
       "position": [
-        1340,
-        2660
-      ],
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "content": "## Instruções\n\n## Acesse seuchatwoot/super_admin e crie um token na opção Platform Apps\n\n## Segundo NO “COLOCANDO DADOS\" URL N8N, URL DO QUEPASA, URL CHATWOOT, TOKEN TOKEN PLATFORM APPS\n\n## Coloque suas credenciais NOS PostgreSQL, elas estarão em seu .env na pasta /home/chatwoot/chatwoot\n\n## Ligue seu Workflow e divirta-se ",
-        "height": 323.81657008951095,
-        "width": 1970.8834440665596
-      },
-      "id": "2dd9142b-f670-4a1a-821b-2305268e20e9",
-      "name": "Sticky Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        -560,
-        1681
+        2080,
+        560
       ]
     },
     {
@@ -625,13 +458,13 @@
         },
         "options": {}
       },
-      "id": "0430bb1a-de66-4a58-b0e2-f5629d5653e9",
+      "id": "d9c605a2-8e0c-42ea-8e2b-c42e044db335",
       "name": "Restart Quepasa",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
       "position": [
-        180,
-        2440
+        500,
+        780
       ],
       "retryOnFail": true,
       "maxTries": 2,
@@ -644,13 +477,13 @@
         "token": "={{ $node[\"Colocando Dados\"].json[\"TOKEN DO QUEPASA\"] }}",
         "resource": "information"
       },
-      "id": "462426c0-6f9c-4cde-899d-f67cdcf7072b",
+      "id": "8364ddb5-9054-4a68-b6b3-a793e72befd8",
       "name": "Quepasa Info",
       "type": "n8n-nodes-quepasa.quepasa",
       "typeVersion": 1,
       "position": [
-        480,
-        2460
+        860,
+        360
       ],
       "continueOnFail": true
     },
@@ -699,13 +532,13 @@
           ]
         }
       },
-      "id": "243cdea1-05b2-4a40-b1f0-80699c7f8b07",
+      "id": "75f5b889-3c37-44c5-85f9-d159233f43e6",
       "name": "Webhook Update",
       "type": "n8n-nodes-quepasa.quepasa",
       "typeVersion": 1,
       "position": [
-        920,
-        2460
+        1240,
+        880
       ],
       "continueOnFail": true
     },
@@ -720,13 +553,13 @@
           ]
         }
       },
-      "id": "b37abc27-c661-401a-a76e-a53f1433543d",
+      "id": "0afcf65c-362f-4feb-9c21-3b9b6fe1453f",
       "name": "Success QrCode",
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        320,
-        2580
+        620,
+        540
       ]
     },
     {
@@ -742,13 +575,13 @@
         },
         "options": {}
       },
-      "id": "75f5ec79-9ce4-451d-a46b-d0d778f07576",
+      "id": "5ef2567e-ca1c-494c-80ea-6d7fb02346bb",
       "name": "URL FORMADA",
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        560,
-        2240
+        160,
+        440
       ]
     },
     {
@@ -783,13 +616,13 @@
         },
         "options": {}
       },
-      "id": "8a2ab798-7163-46bc-9b05-9b4fb0299914",
+      "id": "a2063d7c-d506-4538-955c-49fbeb793006",
       "name": "Confirmação Dos Dados",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
       "position": [
-        720,
-        2460
+        960,
+        680
       ]
     },
     {
@@ -824,14 +657,80 @@
         },
         "options": {}
       },
-      "id": "4bba2895-cb78-4790-9dca-c9c75a0ab0c9",
+      "id": "e62a202c-4997-442a-963b-ca2a26d2d1d1",
       "name": "Qrcode Falhou",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
       "position": [
-        720,
-        2660
+        840,
+        940
       ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=INSERT INTO \"agent_bot_inboxes\" (\"id\", \"inbox_id\", \"agent_bot_id\", \"status\", \"created_at\", \"updated_at\", \"account_id\") VALUES (nextval('agent_bot_inboxes_id_seq'::regclass), {{ $node[\"Colocando Dados\"].json[\"NUMERO DO INBOX\"] }}, {{ $node[\"Garante AgentBot\"].json[\"id\"] }}, 0, '2023-03-07 15:01:00.823377', '2023-03-07 15:01:00.823377', {{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }});",
+        "additionalFields": {}
+      },
+      "id": "3a8e0c5a-4fb0-4093-b1ca-0b729dcacc9d",
+      "name": "Insere AgentBot",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        -1020,
+        720
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=INSERT INTO \"public\".\"agent_bots\" (\"name\", \"account_id\", \"created_at\", \"updated_at\")\nSELECT 'quepasabot', '{{ $json[\"ID DA CONTA\"] }}', NOW(), NOW() \nWHERE NOT EXISTS (SELECT NULL FROM \"public\".\"agent_bots\" WHERE \"account_id\" = '{{ $json[\"ID DA CONTA\"] }}' AND \"bot_type\" = '0' AND \"name\" LIKE '%quepasabot%');\nSELECT \"id\" FROM \"public\".\"agent_bots\" WHERE \"account_id\" = '{{ $json[\"ID DA CONTA\"] }}' AND \"bot_type\" = '0' AND \"name\" LIKE '%quepasabot%';",
+        "additionalFields": {}
+      },
+      "id": "3e9895da-6428-4f8c-aef0-e798313f04f0",
+      "name": "Garante AgentBot",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        -700,
+        440
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=INSERT INTO \"public\".\"access_tokens\" (\"owner_type\", \"owner_id\", \"token\", \"created_at\", \"updated_at\")\nSELECT 'AgentBot', '{{ $node[\"Garante AgentBot\"].json[\"id\"] }}', SUBSTRING(md5(random()::text),0,24), NOW(), NOW() \nWHERE NOT EXISTS (SELECT NULL FROM \"public\".\"access_tokens\" WHERE \"owner_id\" = '{{ $node[\"Garante AgentBot\"].json[\"id\"] }}');\nSELECT \"token\" FROM \"public\".\"access_tokens\" WHERE \"owner_id\" = '{{ $node[\"Garante AgentBot\"].json[\"id\"] }}';",
+        "additionalFields": {}
+      },
+      "id": "0016eb23-8a84-4aa3-97dc-fd27273b7c8d",
+      "name": "Garante Token",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        440
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -851,7 +750,7 @@
       "main": [
         [
           {
-            "node": "Cria AgentBot",
+            "node": "Garante AgentBot",
             "type": "main",
             "index": 0
           }
@@ -891,60 +790,11 @@
         ]
       ]
     },
-    "Cria AgentBot": {
-      "main": [
-        [
-          {
-            "node": "Atribui Cria AgentBot a Conta",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Atribui Cria AgentBot a Conta": {
-      "main": [
-        [
-          {
-            "node": "Atribui Cria AgentBot a Conta1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Atribui Cria AgentBot a Conta1": {
-      "main": [
-        [
-          {
-            "node": "Insere AgentBot",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Informa Identifier",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Formação da URL": {
       "main": [
         [
           {
             "node": "URL FORMADA",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Insere AgentBot": {
-      "main": [
-        [
-          {
-            "node": "Informa Identifier",
             "type": "main",
             "index": 0
           }
@@ -1112,38 +962,71 @@
           }
         ]
       ]
+    },
+    "Insere AgentBot": {
+      "main": [
+        [
+          {
+            "node": "Informa Identifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Garante AgentBot": {
+      "main": [
+        [
+          {
+            "node": "Garante Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Garante Token": {
+      "main": [
+        [
+          {
+            "node": "Insere AgentBot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {},
-  "versionId": "d58acd26-bf58-4f2e-90a6-86165da8a3d9",
-  "id": "63",
+  "versionId": "f088e25f-0ec6-475d-81ad-3dcd84fde775",
+  "id": "9",
   "meta": {
-    "instanceId": "9e41889ebbe84e27f08bdfb3a576d7eba8cf252e83bef1b2495693e0b3c4fd4f"
+    "instanceId": "cf33494a10c7fddb894ec4f480b7a0ef8832652eb98e75664a7d2731824deaf9"
   },
   "tags": [
     {
-      "createdAt": "2023-02-20T15:14:10.508Z",
-      "updatedAt": "2023-02-20T15:14:10.508Z",
+      "createdAt": "2023-03-27T10:14:31.447Z",
+      "updatedAt": "2023-03-27T10:14:31.447Z",
       "id": "1",
       "name": "SUFFICIT"
     },
     {
-      "createdAt": "2023-02-20T15:15:27.965Z",
-      "updatedAt": "2023-02-20T15:15:27.965Z",
+      "createdAt": "2023-03-27T10:16:19.227Z",
+      "updatedAt": "2023-03-27T10:16:19.227Z",
       "id": "2",
-      "name": "CHATWOOT"
-    },
-    {
-      "createdAt": "2023-02-20T15:15:27.965Z",
-      "updatedAt": "2023-02-20T15:15:27.965Z",
-      "id": "3",
       "name": "QUEPASA"
     },
     {
-      "createdAt": "2023-03-03T15:20:59.241Z",
-      "updatedAt": "2023-03-03T15:20:59.241Z",
-      "id": "5",
+      "createdAt": "2023-03-27T10:16:19.240Z",
+      "updatedAt": "2023-03-27T10:16:19.240Z",
+      "id": "3",
+      "name": "CHATWOOT"
+    },
+    {
+      "createdAt": "2023-03-27T10:16:36.815Z",
+      "updatedAt": "2023-03-27T10:16:36.815Z",
+      "id": "4",
       "name": "EngajamentoFlow"
     }
   ]
