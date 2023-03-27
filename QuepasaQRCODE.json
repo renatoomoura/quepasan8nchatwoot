@@ -1,0 +1,1150 @@
+{
+  "name": "QuepasaQRCODE",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "socialatendimento",
+        "options": {}
+      },
+      "id": "285b07df-91e0-4056-9dd6-e25ac7830460",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        2040
+      ],
+      "webhookId": "e8d38d79-8f79-4bd1-85f8-fce3d8200233"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "URL FORMADA",
+              "value": "=https://{{ $node[\"Colocando Dados\"].json[\"URL N8N\"] }}/webhook/from-chatwoot?qphost=https://{{ $node[\"Colocando Dados\"].json[\"URL DO QUEPASA\"] }}&qptoken={{ $node[\"Colocando Dados\"].json[\"TOKEN DO QUEPASA\"] }}&inbox={{ $node[\"Colocando Dados\"].json[\"NUMERO DO INBOX\"] }}&identifier={{ $node[\"Informa Identifier\"].json[\"identifier\"] }}&cwhost=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}&utoken={{ $json.substring }}&atoken={{ $node[\"Atribui Cria AgentBot a Conta1\"].json[\"access_token\"] }}&account={{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "131e0c1b-7502-47fb-923c-44f25cdaddec",
+      "name": "Formação da URL",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        240,
+        2241
+      ],
+      "retryOnFail": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "URL N8N",
+              "value": "workflows.socialatendimento.com.br"
+            },
+            {
+              "name": "URL DO QUEPASA",
+              "value": "quepasa.socialatendimento.com.br"
+            },
+            {
+              "name": "TOKEN DO QUEPASA",
+              "value": "=token{{ $json.body.timestamp }}"
+            },
+            {
+              "name": "NUMERO DO INBOX",
+              "value": "={{ $json.body.contact_inbox.inbox_id }}"
+            },
+            {
+              "name": "URL CHATWOOT",
+              "value": "sender.socialatendimento.com.br"
+            },
+            {
+              "name": "ID DA CONTA",
+              "value": "={{ $json.body.messages[0].account_id }}"
+            },
+            {
+              "name": "TOKEN Platform Apps",
+              "value": "9zgP1k6qZ6bPciGXjt9vJyiq"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3456fb7b-1c01-4021-9ddb-a558c39eddc7",
+      "name": "Colocando Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        2040
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "Token",
+              "value": "={{ $node[\"Colocando Dados\"].json[\"TOKEN DO QUEPASA\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "558bca49-c54e-444c-8ece-7aaa552d8bf7",
+      "name": "Gerador Token",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        780,
+        2240
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL DO QUEPASA\"] }}/scan",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-QUEPASA-TOKEN",
+              "value": "={{ $json.Token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b21fa2da-bda1-4409-a82b-4df0f88117b3",
+      "name": "Cria o QrCode",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        -540,
+        2440
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/api/v1/accounts/{{ $node.Webhook.json.body.messages[0].account_id }}/conversations/{{ $node.Webhook.json.body.messages[0].conversation_id }}/messages ",
+        "allowUnauthorizedCerts": true,
+        "jsonParameters": true,
+        "options": {
+          "bodyContentType": "multipart-form-data"
+        },
+        "sendBinaryData": true,
+        "binaryPropertyName": "attachments[]:data",
+        "headerParametersJson": "={ \"api_access_token\": \"{{ $node[\"Pega Token Chatwoot\"].json.substring }}\" }",
+        "queryParametersJson": "={{ $binary }}"
+      },
+      "name": "Envia QRCode No Chatwoot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        -380,
+        2440
+      ],
+      "id": "36aa28c0-6a17-4c16-a14a-c78c29f8fadd"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/platform/api/v1/agent_bots",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $json[\"TOKEN Platform Apps\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $json.body.inbox_id }}"
+            },
+            {
+              "name": "description",
+              "value": "={{ $json.body.inbox_id }}"
+            },
+            {
+              "name": "outgoing_url",
+              "value": "={{ $json.body.inbox_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "33e7b494-4f40-4508-9917-93d4bc3f6d25",
+      "name": "Cria AgentBot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        -120,
+        2040
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/platform/api/v1/agent_bots/{{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $node[\"Colocando Dados\"].json[\"TOKEN Platform Apps\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $json.name }}"
+            },
+            {
+              "name": "description",
+              "value": "={{ $json.description }}"
+            },
+            {
+              "name": "outgoing_url",
+              "value": "={{ $json.outgoing_url }}"
+            },
+            {
+              "name": "account_id",
+              "value": "={{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2afd3f64-3e4f-46fe-816a-0ad3fbf418b0",
+      "name": "Atribui Cria AgentBot a Conta",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        80,
+        2040
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/platform/api/v1/agent_bots/{{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $node[\"Colocando Dados\"].json[\"TOKEN Platform Apps\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $json.name }}"
+            },
+            {
+              "name": "description",
+              "value": "={{ $json.description }}"
+            },
+            {
+              "name": "outgoing_url",
+              "value": "={{ $json.outgoing_url }}"
+            },
+            {
+              "name": "account_id",
+              "value": "={{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "49ab7c8a-194d-4ffc-9acd-3813d6672f5b",
+      "name": "Atribui Cria AgentBot a Conta1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        280,
+        2040
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=UPDATE \"public\".\"channel_api\" SET \"webhook_url\"='{{ $node[\"Formação da URL\"].json[\"URL FORMADA\"] }}' WHERE  \"id\"={{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }};",
+        "additionalFields": {}
+      },
+      "id": "bc3121b9-e944-4ee2-adeb-523c23c43b10",
+      "name": "Atualiza Webhook",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        2540
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "6",
+          "name": "Postgres account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=INSERT INTO \"agent_bot_inboxes\" (\"id\", \"inbox_id\", \"agent_bot_id\", \"status\", \"created_at\", \"updated_at\", \"account_id\") VALUES (nextval('agent_bot_inboxes_id_seq'::regclass), {{ $node[\"Colocando Dados\"].json[\"NUMERO DO INBOX\"] }}, {{ $json.id }}, 0, '2023-03-07 15:01:00.823377', '2023-03-07 15:01:00.823377', {{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }});",
+        "additionalFields": {}
+      },
+      "id": "f4229e40-c8ff-43f4-b16c-f55a64459c21",
+      "name": "Insere AgentBot",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        2240
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "6",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=SELECT \"public\".\"channel_api\".\"identifier\" FROM \"public\".\"channel_api\" INNER JOIN \"public\".\"inboxes\" ON \"public\".\"channel_api\".\"id\" = \"public\".\"inboxes\".\"channel_id\" WHERE \"public\".\"channel_api\".\"account_id\"={{ $json.account_id }} AND \"public\".\"inboxes\".\"id\" = {{ $json.name }};",
+        "additionalFields": {}
+      },
+      "id": "24c487d8-58ed-43ae-a294-5a58e31fb42e",
+      "name": "Informa Identifier",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        2240
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "6",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.status }}",
+              "value2": "unknown error"
+            }
+          ]
+        }
+      },
+      "id": "69c21e89-8e5b-4bdb-9aa8-0c259228b7ac",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        2320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/api/v1/accounts/{{ $node.Webhook.json.body.messages[0].account_id }}/conversations/{{ $node.Webhook.json.body.messages[0].conversation_id }}/messages ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $node[\"Pega Token Chatwoot\"].json.substring }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "=✅ Qrcode escaneado com sucesso!\n\n✅ Sistema Pronto para Usar\n"
+            },
+            {
+              "name": "message_type",
+              "value": "incoming"
+            },
+            {
+              "name": "private",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "21b45a76-d83b-4948-ac20-f9be1c6fdf38",
+      "name": "Envia Mensagem De Conectado",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1300,
+        2420
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=SELECT  \"id\", SUBSTRING(\"owner_type\", 1, 256),  \"owner_id\", SUBSTRING(\"token\", 1, 256),  \"created_at\",  \"updated_at\" \nFROM \"public\".\"access_tokens\" \nWHERE \"owner_id\"={{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }} AND \n      \"owner_type\"='User'",
+        "additionalFields": {}
+      },
+      "id": "242cc507-a3b9-4db2-891b-277b4a991bb0",
+      "name": "Pega Token Chatwoot",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        2241
+      ],
+      "alwaysOutputData": false,
+      "retryOnFail": false,
+      "credentials": {
+        "postgres": {
+          "id": "6",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/api/v1/accounts/{{ $node.Webhook.json.body.messages[0].account_id }}/conversations/{{ $node.Webhook.json.body.messages[0].conversation_id }}/messages ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $node[\"Pega Token Chatwoot\"].json.substring }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "=✅ Qrcode gerado com sucesso!\n\n✅ Digitalize este código QR nos próximos 20 segundos:"
+            },
+            {
+              "name": "message_type",
+              "value": "incoming"
+            },
+            {
+              "name": "private",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "45814055-eeb8-4266-ab6c-e851bea5ab16",
+      "name": "Qrcode gerado com sucesso!",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        -200,
+        2440
+      ]
+    },
+    {
+      "parameters": {
+        "baseUrl": "https://quepasa.socialatendimento.com.br",
+        "token": "={{ $node[\"Colocando Dados\"].json[\"TOKEN DO QUEPASA\"] }}",
+        "resource": "webhook"
+      },
+      "id": "74796e88-d98f-45db-adc5-07a0a6ddac40",
+      "name": "Verifica se Conectou",
+      "type": "n8n-nodes-quepasa.quepasa",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        2040
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/api/v1/accounts/{{ $node.Webhook.json.body.messages[0].account_id }}/conversations/{{ $node.Webhook.json.body.messages[0].conversation_id }}/messages ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $node[\"Pega Token Chatwoot\"].json.substring }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "=✅ Qrcode gerado com expirou, por favor \n\n✅ Iniciar novamente, uma nova Caixa de Entrada!\n"
+            },
+            {
+              "name": "message_type",
+              "value": "incoming"
+            },
+            {
+              "name": "private",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d81c5bf6-6c0c-4c05-a9d8-288cb76cf770",
+      "name": "Passou tempo Tente Novamente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1300,
+        2100
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 30,
+        "unit": "seconds"
+      },
+      "id": "d45b29fe-4271-412d-a9ff-c24bde8ccf21",
+      "name": "Aguarda 30 Segundos para Escanear Qrcode",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        0,
+        2440
+      ],
+      "webhookId": "b8706931-81cb-4f18-93e0-0a5d5416734b"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/api/v1/accounts/{{ $node.Webhook.json.body.messages[0].account_id }}/conversations/{{ $node.Webhook.json.body.messages[0].conversation_id }}/messages ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $node[\"Pega Token Chatwoot\"].json.substring }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "=🔘 Que bom que deu tudo certo, que tal fazer uma contribuição para quem criou esse manual sensacional?\n\n✅ PIX CNPJ\n\n45959142000119\t\n\n😀Assim você ajuda a trazer mais novidades😀\n\n😀Para apagar essa mensagem basta Acessar NO Workflow QRCODE e apagar ultimo NO😀\n"
+            },
+            {
+              "name": "message_type",
+              "value": "incoming"
+            },
+            {
+              "name": "private",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2e9f841b-9164-4b72-9968-8f8dfec49b63",
+      "name": "Testando 123",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1340,
+        2660
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Instruções\n\n## Acesse seuchatwoot/super_admin e crie um token na opção Platform Apps\n\n## Segundo NO “COLOCANDO DADOS\" URL N8N, URL DO QUEPASA, URL CHATWOOT, TOKEN TOKEN PLATFORM APPS\n\n## Coloque suas credenciais NOS PostgreSQL, elas estarão em seu .env na pasta /home/chatwoot/chatwoot\n\n## Ligue seu Workflow e divirta-se ",
+        "height": 323.81657008951095,
+        "width": 1970.8834440665596
+      },
+      "id": "2dd9142b-f670-4a1a-821b-2305268e20e9",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        1681
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL DO QUEPASA\"] }}/command",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "action",
+              "value": "restart"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-QUEPASA-TOKEN",
+              "value": "={{ $node[\"Colocando Dados\"].json[\"TOKEN DO QUEPASA\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0430bb1a-de66-4a58-b0e2-f5629d5653e9",
+      "name": "Restart Quepasa",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        180,
+        2440
+      ],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "baseUrl": "=https://{{ $node[\"Colocando Dados\"].json[\"URL DO QUEPASA\"] }}",
+        "token": "={{ $node[\"Colocando Dados\"].json[\"TOKEN DO QUEPASA\"] }}",
+        "resource": "information"
+      },
+      "id": "462426c0-6f9c-4cde-899d-f67cdcf7072b",
+      "name": "Quepasa Info",
+      "type": "n8n-nodes-quepasa.quepasa",
+      "typeVersion": 1,
+      "position": [
+        480,
+        2460
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "baseUrl": "=https://{{ $node[\"Colocando Dados\"].json[\"URL DO QUEPASA\"] }}",
+        "token": "={{ $node[\"Colocando Dados\"].json[\"TOKEN DO QUEPASA\"] }}",
+        "resource": "webhook",
+        "operation": "setup",
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL N8N\"] }}/webhook/to-chatwoot",
+        "trackId": "chatwoot",
+        "extraAttributes": {
+          "attribute": [
+            {
+              "key": "identifier",
+              "value": "={{ $node[\"Informa Identifier\"].json[\"identifier\"] }}"
+            },
+            {
+              "key": "cwhost",
+              "value": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}"
+            },
+            {
+              "key": "inbox",
+              "value": "={{ $node[\"Colocando Dados\"].json[\"NUMERO DO INBOX\"] }}"
+            },
+            {
+              "key": "account",
+              "value": "={{ $node[\"Colocando Dados\"].json[\"ID DA CONTA\"] }}"
+            },
+            {
+              "key": "utoken",
+              "value": "={{ $node[\"Pega Token Chatwoot\"].json[\"substring\"] }}"
+            },
+            {
+              "key": "atoken",
+              "value": "={{ $node[\"Atribui Cria AgentBot a Conta1\"].json[\"access_token\"] }}"
+            },
+            {
+              "key": "qphost",
+              "value": "=https://{{ $node[\"Colocando Dados\"].json[\"URL DO QUEPASA\"] }}"
+            },
+            {
+              "key": "qptoken",
+              "value": "={{ $node[\"Colocando Dados\"].json[\"TOKEN DO QUEPASA\"] }}"
+            }
+          ]
+        }
+      },
+      "id": "243cdea1-05b2-4a40-b1f0-80699c7f8b07",
+      "name": "Webhook Update",
+      "type": "n8n-nodes-quepasa.quepasa",
+      "typeVersion": 1,
+      "position": [
+        920,
+        2460
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.success }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "b37abc27-c661-401a-a76e-a53f1433543d",
+      "name": "Success QrCode",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        320,
+        2580
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "URL FORMADA",
+              "value": "={{ $json[\"URL FORMADA\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "75f5ec79-9ce4-451d-a46b-d0d778f07576",
+      "name": "URL FORMADA",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        560,
+        2240
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/api/v1/accounts/{{ $node.Webhook.json.body.messages[0].account_id }}/conversations/{{ $node.Webhook.json.body.messages[0].conversation_id }}/messages ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $node[\"Pega Token Chatwoot\"].json.substring }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "=Informações do servidor:\nToken gerado: {{ $json.server.token }}\nWhatsapp: {{ $json.server.wid }}\n\n\n"
+            },
+            {
+              "name": "message_type",
+              "value": "incoming"
+            },
+            {
+              "name": "private",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8a2ab798-7163-46bc-9b05-9b4fb0299914",
+      "name": "Confirmação Dos Dados",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        720,
+        2460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $node[\"Colocando Dados\"].json[\"URL CHATWOOT\"] }}/api/v1/accounts/{{ $node.Webhook.json.body.messages[0].account_id }}/conversations/{{ $node.Webhook.json.body.messages[0].conversation_id }}/messages ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $node[\"Pega Token Chatwoot\"].json.substring }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "=Tempo para escanear expirou !\nTente novamente digitando /qrcode\n\n"
+            },
+            {
+              "name": "message_type",
+              "value": "incoming"
+            },
+            {
+              "name": "private",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4bba2895-cb78-4790-9dca-c9c75a0ab0c9",
+      "name": "Qrcode Falhou",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        720,
+        2660
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Colocando Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Colocando Dados": {
+      "main": [
+        [
+          {
+            "node": "Cria AgentBot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerador Token": {
+      "main": [
+        [
+          {
+            "node": "Cria o QrCode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria o QrCode": {
+      "main": [
+        [
+          {
+            "node": "Envia QRCode No Chatwoot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia QRCode No Chatwoot": {
+      "main": [
+        [
+          {
+            "node": "Qrcode gerado com sucesso!",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria AgentBot": {
+      "main": [
+        [
+          {
+            "node": "Atribui Cria AgentBot a Conta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atribui Cria AgentBot a Conta": {
+      "main": [
+        [
+          {
+            "node": "Atribui Cria AgentBot a Conta1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atribui Cria AgentBot a Conta1": {
+      "main": [
+        [
+          {
+            "node": "Insere AgentBot",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Informa Identifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formação da URL": {
+      "main": [
+        [
+          {
+            "node": "URL FORMADA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insere AgentBot": {
+      "main": [
+        [
+          {
+            "node": "Informa Identifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Informa Identifier": {
+      "main": [
+        [
+          {
+            "node": "Pega Token Chatwoot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Passou tempo Tente Novamente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Envia Mensagem De Conectado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pega Token Chatwoot": {
+      "main": [
+        [
+          {
+            "node": "Formação da URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qrcode gerado com sucesso!": {
+      "main": [
+        [
+          {
+            "node": "Aguarda 30 Segundos para Escanear Qrcode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica se Conectou": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aguarda 30 Segundos para Escanear Qrcode": {
+      "main": [
+        [
+          {
+            "node": "Restart Quepasa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envia Mensagem De Conectado": {
+      "main": [
+        [
+          {
+            "node": "Testando 123",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restart Quepasa": {
+      "main": [
+        [
+          {
+            "node": "Success QrCode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quepasa Info": {
+      "main": [
+        [
+          {
+            "node": "Confirmação Dos Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Update": {
+      "main": [
+        [
+          {
+            "node": "Verifica se Conectou",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Atualiza Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Success QrCode": {
+      "main": [
+        [
+          {
+            "node": "Quepasa Info",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Qrcode Falhou",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URL FORMADA": {
+      "main": [
+        [
+          {
+            "node": "Gerador Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirmação Dos Dados": {
+      "main": [
+        [
+          {
+            "node": "Webhook Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "d58acd26-bf58-4f2e-90a6-86165da8a3d9",
+  "id": "63",
+  "meta": {
+    "instanceId": "9e41889ebbe84e27f08bdfb3a576d7eba8cf252e83bef1b2495693e0b3c4fd4f"
+  },
+  "tags": [
+    {
+      "createdAt": "2023-02-20T15:14:10.508Z",
+      "updatedAt": "2023-02-20T15:14:10.508Z",
+      "id": "1",
+      "name": "SUFFICIT"
+    },
+    {
+      "createdAt": "2023-02-20T15:15:27.965Z",
+      "updatedAt": "2023-02-20T15:15:27.965Z",
+      "id": "2",
+      "name": "CHATWOOT"
+    },
+    {
+      "createdAt": "2023-02-20T15:15:27.965Z",
+      "updatedAt": "2023-02-20T15:15:27.965Z",
+      "id": "3",
+      "name": "QUEPASA"
+    },
+    {
+      "createdAt": "2023-03-03T15:20:59.241Z",
+      "updatedAt": "2023-03-03T15:20:59.241Z",
+      "id": "5",
+      "name": "EngajamentoFlow"
+    }
+  ]
+}

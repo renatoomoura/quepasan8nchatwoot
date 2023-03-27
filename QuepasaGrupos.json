@@ -1,0 +1,182 @@
+{
+  "name": "Start Grupos",
+  "nodes": [
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "URL DO CHATWOOT",
+              "value": "sender.socialatendimento.com.br"
+            },
+            {
+              "name": "TOKEN Platform Apps",
+              "value": "9zgP1k6qZ6bPciGXjt9vJyiq"
+            },
+            {
+              "name": "Token Quepasa",
+              "value": "=1678458676"
+            },
+            {
+              "name": "URL QUEPASA",
+              "value": "quepasa.socialatendimento.com.br"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "36c38b1c-ef87-41f9-9c41-f58e2cd53e3e",
+      "name": "COLOQUE INFORMAÇÕES",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1780,
+        1340
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "db7a9127-5327-47fe-9e9d-9302fb76e4e1",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        1340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://{{ $node[\"COLOQUE INFORMAÇÕES\"].json[\"URL QUEPASA\"] }}/command",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "action",
+              "value": "restart"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "X-QUEPASA-TOKEN",
+              "value": "={{ $node[\"COLOQUE INFORMAÇÕES\"].json[\"Token Quepasa\"] }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": true
+            }
+          }
+        }
+      },
+      "id": "d7a2091c-3a0f-4a1c-a13d-3bc0d6be6091",
+      "name": "Restart Grupos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        2180,
+        1340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://{{ $json[\"URL QUEPASA\"] }}/command",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "action",
+              "value": "groups"
+            },
+            {
+              "name": "status",
+              "value": "start"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "X-QUEPASA-TOKEN",
+              "value": "={{ $json[\"Token Quepasa\"] }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": true
+            }
+          }
+        }
+      },
+      "id": "743a536c-a616-4bd1-b539-f67e649624b9",
+      "name": "Start Grupos Quepasa",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1980,
+        1340
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "COLOQUE INFORMAÇÕES": {
+      "main": [
+        [
+          {
+            "node": "Start Grupos Quepasa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "COLOQUE INFORMAÇÕES",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Grupos Quepasa": {
+      "main": [
+        [
+          {
+            "node": "Restart Grupos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "dc21d80c-344b-4ba5-9d80-dc784f2d3ce1",
+  "id": "61",
+  "meta": {
+    "instanceId": "9e41889ebbe84e27f08bdfb3a576d7eba8cf252e83bef1b2495693e0b3c4fd4f"
+  },
+  "tags": []
+}

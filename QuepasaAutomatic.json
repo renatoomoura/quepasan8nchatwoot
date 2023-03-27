@@ -1,0 +1,247 @@
+{
+  "name": "Criar_Automa__o_e_Contato_Automaticamente",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"Tabela Accounts\"] }}",
+              "value2": "={{ $json[\" Automation_rules\"] }}"
+            }
+          ]
+        }
+      },
+      "id": "74e85912-46bb-4b7d-af69-8e58d0ff36f6",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1352.983257229834,
+        780
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds",
+              "secondsInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "f424b53e-c3d9-4c98-9161-88b3465da278",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        692.983257229834,
+        780
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=INSERT INTO \"contacts\" (\"id\", \"name\", \"email\", \"phone_number\", \"account_id\", \"created_at\", \"updated_at\", \"additional_attributes\", \"identifier\", \"custom_attributes\", \"last_activity_at\") VALUES (nextval('contacts_id_seq'::regclass), 'Quepasa Control', 'control@quepasa.io', '', {{ $json.id }}, '2023-03-10 14:24:02.235268', '2023-03-11 11:17:55.116336', '{\"description\": \"\", \"company_name\": \"\", \"social_profiles\": {\"github\": \"\", \"twitter\": \"\", \"facebook\": \"\", \"linkedin\": \"\"}}', 'control@quepasa.io', '{}', '2023-03-11 11:17:55.096519');",
+        "additionalFields": {}
+      },
+      "id": "fac6e4d2-b958-4cc9-a6c3-c5ba4e1dc2d6",
+      "name": "Cria o Contato",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        1640,
+        700
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=INSERT INTO \"automation_rules\" (\"id\", \"account_id\", \"name\", \"description\", \"event_name\", \"conditions\", \"actions\", \"created_at\", \"updated_at\", \"active\") VALUES (nextval('automation_rules_id_seq'::regclass), {{ $json.id }}, 'Start', 'Start', 'message_created', '[{\"values\": [\"/qrcode\"], \"attribute_key\": \"content\", \"filter_operator\": \"contains\", \"custom_attribute_type\": \"\"}]', '[{\"action_name\": \"send_webhook_event\", \"action_params\": [\"http://localhost:5678/webhook/sls\"]}, {\"action_name\": \"send_webhook_event\", \"action_params\": [\"http://localhost:5678/webhook-test/sls\"]}]', '2023-03-10 14:20:34.326753', '2023-03-10 14:20:34.326753', 'true');",
+        "additionalFields": {}
+      },
+      "id": "011c7ff8-9d34-4e95-909e-55f006b2e268",
+      "name": "Cria Automação",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        1632.983257229834,
+        880
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=SELECT  \"id\", SUBSTRING(\"name\", 1, 256),  \"created_at\",  \"updated_at\",  \"locale\",  \"domain\",  \"support_email\",  \"settings_flags\",  \"feature_flags\",  \"auto_resolve_duration\",  \"limits\",  \"custom_attributes\",  \"status\" FROM \"public\".\"accounts\" LIMIT 1000;",
+        "additionalFields": {}
+      },
+      "id": "0696dea2-1097-4c57-ba4f-7ac6b966466f",
+      "name": "Tabela Accounts",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        952.983257229834,
+        700
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=SELECT  \"id\",  \"account_id\", SUBSTRING(\"name\", 1, 256), SUBSTRING(\"description\", 1, 256), SUBSTRING(\"event_name\", 1, 256),  \"conditions\",  \"actions\",  \"created_at\",  \"updated_at\",  \"active\" FROM \"public\".\"automation_rules\" ORDER BY \"account_id\" ASC LIMIT 1000;",
+        "additionalFields": {}
+      },
+      "id": "c1698353-4b7c-4fe3-8722-843fd20a8c3c",
+      "name": "Tabela  Automation_rules",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        952.983257229834,
+        880
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": " Automation_rules",
+              "value": "={{ $node[\"Tabela  Automation_rules\"].json[\"account_id\"] }}"
+            }
+          ],
+          "number": [
+            {
+              "name": "Tabela Accounts",
+              "value": "={{ $node[\"Tabela Accounts\"].json[\"id\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5ef05cbf-28a6-45b7-8b2b-804c73b27317",
+      "name": "Set Tabela  Automation_rules",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1172.983257229834,
+        780
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Instalação\n\n## ✅ Coloque suas credenciais NOS PostgreSQL, elas estarão em seu .env na pasta /home/chatwoot/chatwoot\n\n## ✅ Worflow criara automaticamente Contato, Quepasa e Automação toda vez que tiver novo cliente cadastrado ",
+        "height": 225.9817351598173,
+        "width": 1519.0106544901075
+      },
+      "id": "2b61f732-d212-4fbc-9143-404c34f4574a",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        460,
+        460
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Tabela Accounts",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tabela  Automation_rules",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Cria o Contato",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cria Automação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tabela Accounts": {
+      "main": [
+        [
+          {
+            "node": "Set Tabela  Automation_rules",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tabela  Automation_rules": {
+      "main": [
+        [
+          {
+            "node": "Set Tabela  Automation_rules",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Tabela  Automation_rules": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "936fdf9d-c731-4e77-9588-1a4235d247b3",
+  "id": "4",
+  "meta": {
+    "instanceId": "fd89507e3e1baa1da3dac90c1908a9b1370ad091b1b806c0217926ad94a64d68"
+  },
+  "tags": []
+}

@@ -29,83 +29,232 @@
 ```
 45959142000119	
 ```
+----------------------------------------------------------------------------
+
+**Manual de Instalação API Quepasa**
+
+git clone https://github.com/sufficit/sufficit-quepasa /opt/quepasa-source
+</p>
+bash /opt/quepasa-source/helpers/install.sh
+</p>
+sudo apt-get install nginx
+</p>
+cd /etc/nginx/sites-enabled
+</p>
+sudo nano /etc/nginx/sites-available/quepasa
+
+</p>
+
+```
+server {
+
+  server_name quepasa.dominio.com.br;
+
+  location / {
+
+    proxy_pass http://127.0.0.1:31000;
+
+    proxy_http_version 1.1;
+
+    proxy_set_header Upgrade $http_upgrade;
+
+    proxy_set_header Connection 'upgrade';
+
+    proxy_set_header Host $host;
+
+    proxy_set_header X-Real-IP $remote_addr;
+
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    
+    proxy_cache_bypass $http_upgrade;
+
+  }
+
+  }
+```
+
+sudo ln -s /etc/nginx/sites-available/quepasa /etc/nginx/sites-enabled
+</p>
+</p>
+sudo apt-get install snapd
+</p>
+sudo snap install --classic certbot
+</p>
+sudo certbot --nginx
+</p>
+Coloque Email:
+</p>
+Y
+</p>
+Y
+</p>
+sudo certbot --nginx
+</p>
+sudo service nginx restart
+</p>
 
 ----------------------------------------------------------------------------
 
-**Instalar NO no N8N**
+**Ativando SSL da API Quepasa**
 
-n8n-nodes-chatwoot
+nano /opt/quepasa-source/src/.env
 </p>
-n8n-nodes-quepasa
+Alterar linha 1
 </p>
-Baixar Workflow
+WEBSOCKETSSL=false
 </p>
-Disponiveis nesse Github
+para
 </p>
-----------------------------------------------------------------------------
+WEBSOCKETSSL=true
 </p>
-
-**Configue os Worflows no N8N**
-
-**Worflow QuepasaQrcode**
-
-</p>
-Acesse seuchatwoot/super_admin e crie um token na opção Platform Apps
-</p>
-Segundo NO “COLOCANDO DADOS" URL N8N, URL DO QUEPASA, URL CHATWOOT, TOKEN TOKEN PLATFORM APPS
-</p>
-Coloque suas credenciais NOS PostgreSQL, elas estarão em seu .env na pasta /home/chatwoot/chatwoot
-</p>
-Ligue seu Workflow e divirta-se 
-
-</p>
-----------------------------------------------------------------------------
+systemctl restart quepasa
 </p>
 
-**Worflows ChatwootToQuepasa QuepasaToChatwoot**
-
-</p>
-Adicione numeros NOS Trigger com numeros correspondente a Workflow
-</p>
 ----------------------------------------------------------------------------
 
-**Criando Seu Bot Agente**
+**Instalação Finalizadas**
 
-Acesse: chatwoot.dominio.com.br/superadmin
 </p>
-Crie seu Token Platform Apps
+quepa.dominio.com.br/setup
 </p>
+Faça os cadastros em todos eles
+</p>
+
 ----------------------------------------------------------------------------
 
-**Crie uma Automação conforme a imagem abaixo**
+**Pronto tudo Funcionando**
 
-<img src="https://github.com/EngajamentoFlow/quepasa/blob/main/Automa%C3%A7%C3%A3o.png" alt="Automação" width="1000" />
-</p>
 ----------------------------------------------------------------------------
 
-**Criando sua Caixa de Entrada**
+**Comando atualizar API Quepasa**
 
-Criar um contato no Chatwoot
+su - quepasa
 </p>
-Quepasa Control
+git pull
 </p>
-control@quepasa.io
+exit
 </p>
-Envia uma mensagem para Contato Criado
+systemctl daemon-reload
 </p>
-Quepasa Control
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+**Versão Docker**
+
+**Manual de Instalação ChatWoot via Docker**
+
+----------------------------------------------------------------------------
+
+git clone https://github.com/aireset/quepasa
 </p>
-/qrcode
+cd quepasa/docker
 </p>
-Leia QRCODE
+nano .env
+</p></p></p>
+WEBSOCKETSSL=false # http or Https
+</p></p>
+para
+</p></p>
+WEBSOCKETSSL=true # http or Https
 </p>
+
+----------------------------------------------------------------------------
+
+**Ativando SSL Quepasa**
+
+</p>
+sudo apt-get install nginx
+</p>
+cd /etc/nginx/sites-enabled
+</p>
+sudo nano /etc/nginx/sites-available/quepasa
+
+</p>
+
+```
+server {
+
+  server_name quepasa.dominio.com.br;
+
+  location / {
+
+    proxy_pass http://127.0.0.1:31000;
+
+    proxy_http_version 1.1;
+
+    proxy_set_header Upgrade $http_upgrade;
+
+    proxy_set_header Connection 'upgrade';
+
+    proxy_set_header Host $host;
+
+    proxy_set_header X-Real-IP $remote_addr;
+
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    
+    proxy_cache_bypass $http_upgrade;
+
+  }
+
+  }
+```
+
+sudo ln -s /etc/nginx/sites-available/quepasa /etc/nginx/sites-enabled
+</p>
+</p>
+sudo apt-get install snapd
+</p>
+sudo snap install --classic certbot
+</p>
+sudo certbot --nginx
+</p>
+Coloque Email:
+</p>
+Y
+</p>
+Y
+</p>
+sudo certbot --nginx
+</p>
+sudo service nginx restart
+</p>
+
+----------------------------------------------------------------------------
+
+*Comandos para Iniciar*
+
+```
+docker-compose build
+docker-compose up -d
+```
+ou 
+
+```
+docker-compose up -d --build
+```
+</p>
+
+----------------------------------------------------------------------------
+
+**Instalação Finalizadas**
+
+</p>
+quepa.dominio.com.br/setup
+</p>
+Faça os cadastros em todos eles
+</p>
+
 ----------------------------------------------------------------------------
 
 **Pronto tudo Funcionando**
 
 ----------------------------------------------------------------------------
 ----------------------------------------------------------------------------
-
 
 **Gostou do Tutorial? Faça sua Contribuição**
 
