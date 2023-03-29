@@ -106,7 +106,7 @@ Crie seu Token Platform Apps
 
 **Crie uma Automação conforme a imagem abaixo**
 
-<img src="https://github.com/EngajamentoFlow/quepasa/blob/main/Automa%C3%A7%C3%A3o.png" alt="Automação" width="1000" />
+<img src="https://github.com/EngajamentoFlow/quepasa/blob/main/Automa%C3%A7%C3%A3o.png" alt="Automação" width="600" />
 </p>
 ----------------------------------------------------------------------------
 
