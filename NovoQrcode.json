@@ -31,7 +31,7 @@
           "string": [
             {
               "name": "Token",
-              "value": "={{ $node[\"Colocando Dados1\"].json[\"TOKEN DO QUEPASA\"] }}"
+              "value": "={{ $node[\"Colocando Dados\"].json[\"TOKEN DO QUEPASA\"] }}"
             }
           ]
         },
@@ -691,22 +691,6 @@
     },
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "socialatendimento",
-        "options": {}
-      },
-      "id": "6a057631-c822-4cd5-a123-03a569b14846",
-      "name": "Webhook1",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 1,
-      "position": [
-        600,
-        460
-      ],
-      "webhookId": "e8d38d79-8f79-4bd1-85f8-fce3d8200233"
-    },
-    {
-      "parameters": {
         "values": {
           "string": [
             {
@@ -738,13 +722,29 @@
         "options": {}
       },
       "id": "92fef799-dce1-4feb-8c91-7b9ab74c678b",
-      "name": "Colocando Dados1",
+      "name": "Colocando Dados",
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
         800,
         460
       ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "socialatendimento",
+        "options": {}
+      },
+      "id": "6a057631-c822-4cd5-a123-03a569b14846",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        600,
+        460
+      ],
+      "webhookId": "e8d38d79-8f79-4bd1-85f8-fce3d8200233"
     }
   ],
   "pinData": {},
@@ -983,22 +983,22 @@
         ]
       ]
     },
-    "Webhook1": {
+    "Colocando Dados": {
       "main": [
         [
           {
-            "node": "Colocando Dados1",
+            "node": "Garante AgentBot",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Colocando Dados1": {
+    "Webhook": {
       "main": [
         [
           {
-            "node": "Garante AgentBot",
+            "node": "Colocando Dados",
             "type": "main",
             "index": 0
           }
