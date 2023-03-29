@@ -101,6 +101,7 @@ Acesse: chatwoot.dominio.com.br/superadmin
 </p>
 Crie seu Token Platform Apps
 </p>
+
 ----------------------------------------------------------------------------
 
 **Crie uma Automação conforme a imagem abaixo**
