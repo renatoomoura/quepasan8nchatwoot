@@ -76,16 +76,13 @@ Disponiveis nesse Github
 **Worflow QuepasaQrcode**
 
 </p>
-Acesse seuchatwoot/super_admin e crie um token na opção Platform Apps
-</p>
-Segundo NO “COLOCANDO DADOS" URL N8N, URL DO QUEPASA, URL CHATWOOT, TOKEN TOKEN PLATFORM APPS
+Segundo NO “COLOCANDO DADOS" URL N8N, URL DO QUEPASA, URL CHATWOOT
 </p>
 Coloque suas credenciais NOS PostgreSQL, elas estarão em seu .env na pasta /home/chatwoot/chatwoot
 </p>
-Ligue seu Workflow e divirta-se 
 
-</p>
 ----------------------------------------------------------------------------
+
 </p>
 
 **Worflows ChatwootToQuepasa QuepasaToChatwoot**
@@ -95,28 +92,8 @@ Adicione numeros NOS Trigger com numeros correspondente a Workflow
 </p>
 ----------------------------------------------------------------------------
 
-**Criando Seu Bot Agente**
-
-Acesse: chatwoot.dominio.com.br/superadmin
-</p>
-Crie seu Token Platform Apps
-</p>
-
-----------------------------------------------------------------------------
-
-**Crie uma Automação conforme a imagem abaixo**
-
-<img src="https://github.com/EngajamentoFlow/quepasa/blob/main/Automa%C3%A7%C3%A3o.png" alt="Automação" width="600" />
-</p>
-----------------------------------------------------------------------------
-
 **Criando sua Caixa de Entrada**
 
-Criar um contato no Chatwoot
-</p>
-Quepasa Control
-</p>
-control@quepasa.io
 </p>
 Envia uma mensagem para Contato Criado
 </p>
