@@ -68,6 +68,10 @@ Baixar Workflow
 </p>
 Disponiveis nesse Github
 </p>
+https://github.com/sufficit/sufficit-quepasa
+</p>
+Pasta sufficit-quepasa/extra/n8n+chatwoot
+</p>
 ----------------------------------------------------------------------------
 </p>
 
