@@ -34,28 +34,35 @@
 
 ----------------------------------------------------------------------------
 
-**Imaginamos aqui que você ja passou dois manuais anteriores**
+**Imaginamos aqui que você ja passou 3 manuais anteriores**
+
+**Manual Instalação CHATWOOT**
+
+🧰 Instruções:
+
+✅  Linux VM
+✅  Docker
+
+https://github.com/EngajamentoFlow/chatwoot
+
+**Manual Instalação N8N**
+
+🧰 Instruções:
+
+✅  Linux VM
+✅  Docker
+
+https://github.com/EngajamentoFlow/n8n
 
 **Manual Instalação QUEPASA**
-</p>
+
+🧰 Instruções:
+
+✅  Linux VM
+✅  Docker
+
 https://github.com/EngajamentoFlow/quepasa
-</p>
-🧰 Instruções:
-</p>
-✅  Linux VM
-</p>
-✅  Docker
-</p>
-Manual Instalação N8N
-</p>
-🧰 Instruções:
-</p>
-✅  Linux VM
-</p>
-✅  Docker
-</p>
-https://github.com/EngajamentoFlow/n8n
-</p>
+
 ----------------------------------------------------------------------------
 
 **Instalar NO no N8N**
