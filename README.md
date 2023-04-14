@@ -92,7 +92,7 @@ Disponiveis nesse Github
 </p>
 https://github.com/EngajamentoFlow/quepasa
 </p>
-Pasta sufficit-quepasa/extra/n8n+chatwoot
+Pasta quepasa/extra/n8n+chatwoot
 </p>
 ----------------------------------------------------------------------------
 </p>
