@@ -90,7 +90,7 @@ Baixar Workflow
 </p>
 Disponiveis nesse Github
 </p>
-https://github.com/EngajamentoFlow/sufficit-quepasa
+https://github.com/EngajamentoFlow/quepasa
 </p>
 Pasta sufficit-quepasa/extra/n8n+chatwoot
 </p>
