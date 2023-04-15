@@ -99,12 +99,8 @@ Pasta quepasa/extra/n8n+chatwoot
 
 **Configue os Worflows no N8N**
 
-**Worflow QuepasaQrcode**
-
 </p>
-Segundo NO “COLOCANDO DADOS" URL N8N, URL DO QUEPASA, URL CHATWOOT
-</p>
-Coloque suas credenciais NOS PostgreSQL, elas estarão em seu .env na pasta /home/chatwoot/chatwoot
+Acesse opção Credentials, adicione suas credenciais Postgres, salve.
 </p>
 
 ----------------------------------------------------------------------------
