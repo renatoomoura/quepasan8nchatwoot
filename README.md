@@ -100,8 +100,9 @@ Pasta quepasa/extra/n8n+chatwoot
 **Configue os Worflows no N8N**
 
 </p>
-Acesse opção Credentials, adicione suas credenciais Postgres, salve.
+Acesse opção Credenciais, adicione suas credenciais Postgres, salve.
 </p>
+Adiocione seu email NO COLOCAR DADOS
 
 ----------------------------------------------------------------------------
 
