@@ -43,10 +43,7 @@
 </p>
 🧰 Instruções:
 </p>
-✅  Linux VM
-</p>
-✅  Docker
-</p>
+
 
 https://github.com/EngajamentoFlow/chatwoot
 </p>
@@ -58,10 +55,7 @@ https://github.com/EngajamentoFlow/chatwoot
 
 🧰 Instruções:
 </p>
-✅  Linux VM
-</p>
-✅  Docker
-</p>
+
 
 https://github.com/EngajamentoFlow/n8n
 </p>
@@ -71,10 +65,7 @@ https://github.com/EngajamentoFlow/n8n
 </p>
 🧰 Instruções:
 </p>
-✅  Linux VM
-</p>
-✅  Docker
-</p>
+
 https://github.com/EngajamentoFlow/quepasa
 </p>
 
